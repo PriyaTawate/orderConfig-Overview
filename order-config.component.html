@@ -1,0 +1,65 @@
+<div ibmGrid class="bx--grid--full-width landing-page">
+    <div ibmRow class="landing-page__banner">
+      <div ibmCol [columnNumbers]="{'lg': 7}">
+          <ibm-accordion>
+              <ibm-accordion-item title="Included with Monthly Charge">  
+                    <div ibmGrid>
+                        <div ibmRow>
+                            <div ibmCol ><p>Up to 30 work units of CPU Usage, 10GB open DISK space</p></div>
+                            <div ibmCol ><p>$600 OTC</p></div>
+                        </div>
+                    </div>
+              </ibm-accordion-item>
+              <ibm-accordion-item title="Pre-installed software configuration">
+                <p>Up to 30 work units of CPU Usage, 10GB open DISK space</p>
+                <br><br>
+                <ibm-checkbox *ngFor="let item of preInstalledSoftwares"
+				(change)="onCheckedChange($event, item)">
+				{{item.content}}
+            </ibm-checkbox>
+            </ibm-accordion-item>
+            <ibm-accordion-item title="Additional features">
+                <p>One instance of the IBM software product listed below are provided in a default configuration.</p>
+                <br><br>
+                
+                <ibm-structured-list [formGroup]="addFeaturesForm" (ngSubmit) = "onSubmit()"> 
+                    <ibm-list-header>
+                        <ibm-list-column>Quantity</ibm-list-column>
+                        <ibm-list-column>Label</ibm-list-column>
+                        <ibm-list-column><label>Version & Release</label></ibm-list-column>
+                        <ibm-list-column>Price</ibm-list-column>
+                    </ibm-list-header>
+                    <ng-container formArrayName="addFeatures">
+                    <ibm-list-row *ngFor="let feature of features; let item of addFeaturesForm.get('addFeatures').controls; let i = index">
+                        <ng-container [formGroupName]="i">
+                        <ibm-list-column>                       
+                            <!-- <ibm-number [min]=0 [max]="feature.maxnum"></ibm-number> -->
+                            <input formControlName="instNumber" type="number" ngModel min=0 max="{{feature.maxnum}}">
+                        </ibm-list-column>
+                        <ibm-list-column nowrap="true">
+                            <input type="text" formControlName="featureLabel" readonly style="border:0" [(ngModel)]="feature.label" (change)="onInputChange()">
+                        </ibm-list-column>
+                        <ibm-list-column>
+                            <ibm-select #selectOption (selected)="onSelectChange($event)" formControlName="versionSelect">
+				                <!-- <option  value="default" disabled selected>Choose an option</option> -->
+				                <option value="{{feature.version}}">{{feature.version}}</option>
+			                </ibm-select>
+                        </ibm-list-column>
+                        <ibm-list-column nowrap="true">
+                            <input type="text" formControlName="featurePrice" readonly style="border:0" ngModel="{{'$' + feature.price + ' ' + feature.unit}}">
+                        </ibm-list-column>
+                    </ng-container>
+                    </ibm-list-row>
+                </ng-container>
+                </ibm-structured-list>
+                <button ibmButton="primary" (click)="onChange($event)" >Add</button>
+            </ibm-accordion-item>
+          </ibm-accordion>
+      </div>
+      <div ibmCol [columnNumbers]="{'lg': 5}">
+          <!-- <router-outlet></router-outlet> -->
+          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
+      </div>
+    </div>   
+  </div>
+

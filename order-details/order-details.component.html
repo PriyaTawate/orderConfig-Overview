@@ -1,0 +1,45 @@
+<div ibmGrid class="bx--grid--full-width landing-page">
+    <div ibmRow>
+        <h3>
+            Order Overview
+        </h3>
+    </div>
+    <hr>
+    <div ibmRow>
+        <h4>
+            {{osTitle}} 
+        </h4>
+    </div>
+    <hr>
+    <ibm-accordion>
+        <ibm-accordion-item title="Counter to check button click" [expanded] = "expandAcc">
+               {{idNew}}
+        </ibm-accordion-item>
+        <ibm-accordion-item title="Pre intalled softwares added" [expanded] = "expandAcc">
+            <p *ngFor="let item of checkedItems">{{item.content}}</p>            
+     </ibm-accordion-item>
+        <ibm-accordion-item title="Additional features added" [expanded] = "expandAcc">
+            <ibm-structured-list>
+                <ibm-list-header>
+                    <ibm-list-column>Quantity</ibm-list-column>
+                    <ibm-list-column>Label</ibm-list-column>
+                    <ibm-list-column><label>Version & Release</label></ibm-list-column>
+                    <ibm-list-column>Price</ibm-list-column>
+                </ibm-list-header>
+                <ibm-list-row *ngFor="let feature of selectedFeatures">
+                    <ibm-list-column>   
+                        <p>Row1
+                        </p>
+                        <!-- <input formControlName="instNumber" type="text"> -->
+                    </ibm-list-column>
+                    <ibm-list-column nowrap="true">label1</ibm-list-column>
+                    <ibm-list-column>
+                        <p>{{feature}}</p>
+                    </ibm-list-column>
+                    <ibm-list-column nowrap="true">$600 OTC</ibm-list-column>
+                </ibm-list-row>
+            </ibm-structured-list>
+     </ibm-accordion-item>
+    </ibm-accordion>
+
+</div>
