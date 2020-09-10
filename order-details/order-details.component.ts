@@ -16,18 +16,32 @@ export class OrderDetailsComponent implements OnInit {
   @Input() checkedItems: any;
   @Input() selectedFeatures: any;
   @Input() orderConfigJson;
-  sumAddFeatures;
-  arr = [0,1,2,3,4]
+  sumAddFeaturesotc;
+  sumAddFeaturesmonth;
+  arr = [0,1,2,3,4];
 
   constructor(private route: ActivatedRoute, router: Router, private orderConfigService: OrderConfigService) { }
 
   ngOnInit() {
         
-
-   this.sumAddFeatures = this.arr.reduce((a, b) => { return a + b; });
-   console.log(this.sumAddFeatures);
   }
   
+  ngOnChanges() {
+    console.log("new " + this.orderConfigJson.addFeatures);
+    this.sumAddFeaturesotc = 0;
+    this.sumAddFeaturesmonth = 0;
+    this.orderConfigJson.addFeatures.forEach(element => {
+      if (element.featureUnit === 'OTC') {
+        this.sumAddFeaturesotc = this.sumAddFeaturesotc + (element.instNumber * element.featurePrice);
+      }
+      else {
+        this.sumAddFeaturesmonth = this.sumAddFeaturesmonth + (element.instNumber * element.featurePrice);
+      }
+      
+    });
+    console.log(this.sumAddFeaturesotc);
+    console.log(this.sumAddFeaturesmonth);
+  }
   
 
 }
