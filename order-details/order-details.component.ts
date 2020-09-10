@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { OrderConfigService } from '../order-config.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ControlContainer } from '@angular/forms';
 
 @Component({
   selector: 'app-order-details',
@@ -15,26 +15,19 @@ export class OrderDetailsComponent implements OnInit {
   @Input() expandAcc : boolean;
   @Input() checkedItems: any;
   @Input() selectedFeatures: any;
+  @Input() orderConfigJson;
+  sumAddFeatures;
+  arr = [0,1,2,3,4]
+
   constructor(private route: ActivatedRoute, router: Router, private orderConfigService: OrderConfigService) { }
 
   ngOnInit() {
-    console.log("in new page " + this.checkedItems);
-  //   this.route.params.subscribe(
-  //     (params: Params) => {
-  //       this.id = +params['id'];
-  //       console.log(this.id);
-  //     }
-  //   );
+        
 
-
-  // //this.id = this.orderConfigService.getId();
-  //   this.orderConfigService.orderChanged.subscribe(
-  //     (id: number) =>
-  //       {
-  //         this.id = id;
-  //       }
-  //   );
+   this.sumAddFeatures = this.arr.reduce((a, b) => { return a + b; });
+   console.log(this.sumAddFeatures);
   }
+  
   
 
 }
