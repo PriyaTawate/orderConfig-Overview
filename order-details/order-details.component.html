@@ -18,28 +18,23 @@
         <ibm-accordion-item title="Pre intalled softwares added" [expanded] = "expandAcc">
             <p *ngFor="let item of checkedItems">{{item.content}}</p>            
      </ibm-accordion-item>
-        <ibm-accordion-item title="Additional features added" [expanded] = "expandAcc">
-            <ibm-structured-list>
-                <ibm-list-header>
-                    <ibm-list-column>Quantity</ibm-list-column>
-                    <ibm-list-column>Label</ibm-list-column>
-                    <ibm-list-column><label>Version & Release</label></ibm-list-column>
-                    <ibm-list-column>Price</ibm-list-column>
-                </ibm-list-header>
-                <ibm-list-row *ngFor="let feature of selectedFeatures">
-                    <ibm-list-column>   
-                        <p>Row1
-                        </p>
-                        <!-- <input formControlName="instNumber" type="text"> -->
-                    </ibm-list-column>
-                    <ibm-list-column nowrap="true">label1</ibm-list-column>
-                    <ibm-list-column>
-                        <p>{{feature}}</p>
-                    </ibm-list-column>
-                    <ibm-list-column nowrap="true">$600 OTC</ibm-list-column>
-                </ibm-list-row>
-            </ibm-structured-list>
+        <ibm-accordion-item title="Additional features:  " [expanded] = "expandAcc">
+                <div ibmGrid>
+                    <div ibmRow *ngFor="let feature of orderConfigJson.addFeatures">
+                        <ng-template [ngIf]="feature.instNumber && feature.instNumber > 0">
+                            <div ibmCol [columnNumbers]="{'lg': 7}">
+                                <p noWrap=true><span>{{feature.featureLabel}}  </span> 
+                                <span>{{feature.versionSelect}} :  </span>
+                                <span>{{feature.instNumber}}</span></p>
+                            </div>
+                            <div ibmCol [columnNumbers]="{'lg': 5}">
+                                <p><span>$ {{feature.featurePrice * feature.instNumber}}</span>
+                                <span>{{feature.featureUnit}}</span></p>
+                            </div>
+                            <div></div>
+                        </ng-template>  
+                    </div>
+                </div>
      </ibm-accordion-item>
     </ibm-accordion>
-
 </div>
