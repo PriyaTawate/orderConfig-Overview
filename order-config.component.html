@@ -33,7 +33,7 @@
                     <ibm-list-row *ngFor="let feature of features; let item of addFeaturesForm.get('addFeatures').controls; let i = index">
                         <ng-container [formGroupName]="i">
                         <ibm-list-column>                       
-                            <!-- <ibm-number [min]=0 [max]="feature.maxnum"></ibm-number> -->
+                            <!-- <ibm-number [min]=0 [max]="feature.maxnum" formControlName="instNumber" ngModel maxlength=2></ibm-number> -->
                             <input formControlName="instNumber" type="number" ngModel min=0 max="{{feature.maxnum}}">
                         </ibm-list-column>
                         <ibm-list-column nowrap="true">
@@ -41,12 +41,16 @@
                         </ibm-list-column>
                         <ibm-list-column>
                             <ibm-select #selectOption (selected)="onSelectChange($event)" formControlName="versionSelect">
-				                <!-- <option  value="default" disabled selected>Choose an option</option> -->
-				                <option value="{{feature.version}}">{{feature.version}}</option>
+				                <option  value="default" disabled>Choose an option</option>
+				                <option [value]="feature.version" selected="false">{{feature.version}}</option>
 			                </ibm-select>
                         </ibm-list-column>
                         <ibm-list-column nowrap="true">
-                            <input type="text" formControlName="featurePrice" readonly style="border:0" ngModel="{{'$' + feature.price + ' ' + feature.unit}}">
+                            <span>
+                            $
+                            <input type="text" formControlName="featurePrice" readonly style="border:0" size="3" ngModel="{{feature.price}}">
+                            <input type="text" formControlName="featureUnit" readonly style="border:0" ngModel="{{feature.unit}}">
+                            </span>
                         </ibm-list-column>
                     </ng-container>
                     </ibm-list-row>
@@ -55,10 +59,11 @@
                 <button ibmButton="primary" (click)="onChange($event)" >Add</button>
             </ibm-accordion-item>
           </ibm-accordion>
+          <p>{{addFeaturesForm.value|json}}</p>
       </div>
       <div ibmCol [columnNumbers]="{'lg': 5}">
           <!-- <router-outlet></router-outlet> -->
-          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
+          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [orderConfigJson]="addFeaturesForm.value" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
       </div>
     </div>   
   </div>
