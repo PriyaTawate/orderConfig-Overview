@@ -84,8 +84,9 @@ createItem(): FormGroup {
   return this.formBuilder.group({
     instNumber : new FormControl(0, [Validators.required]),
     featureLabel: '',
-    versionSelect : '',
-    featurePrice: ''
+    versionSelect : 'default',
+    featurePrice: '',
+    featureUnit: ''
   });
 }
 
