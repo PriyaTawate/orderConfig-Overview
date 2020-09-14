@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ɵConsole } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderConfigService } from './order-config.service';
 import {FormControl, FormGroup, FormBuilder, FormArray, Validator, Validators} from '@angular/forms';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-order-config',
@@ -11,14 +12,24 @@ import {FormControl, FormGroup, FormBuilder, FormArray, Validator, Validators} f
 export class OrderConfigComponent implements OnInit {
   id: number = 0;
   expandAcc: boolean = false;
-  addFeaturesForm = new FormGroup({});
   selectedOSTitle: string = "Remote Development Program for z/OS V2";
-  preInstalledSoftwares = [{id: 1, content: "DB 2 11 for z/OS and Utilities"},{id: 2, content: "DB 2 10 for z/OS and Utilities"},{id: 3, content: "CICS Transaction server for z/OS v5.1"}];
+  preInstalledSoftwares = [{id: 1, content: "DB 2 11 for z/OS and Utilities"},
+                           {id: 2, content: "DB 2 10 for z/OS and Utilities"},
+                           {id: 3, content: "CICS Transaction server for z/OS v5.1"},
+                           {}];
   SoftwarestobeSaved = [];
   features = [];
+  addFeaturesForm = new FormGroup({});
   addFeatures = new FormArray([]);
-  versionReleaseItems = [{content: "v12.0", id: 0}, {content: "v13.0", id: 1}];
-  @ViewChild('selectOption', {static: false}) selectOption: ElementRef;
+  sysAccForm = new FormGroup({});
+  // sysAccInfoLoginId = new FormGroup({});
+  sysAccInfoArray;
+  sysAccInfo = [{ "maxnum": 1, "label": "Public Internet Feature", "price": 0, "unit": "Feature at No Cost" },
+  { "maxnum": 1, "label": "Site to site VPN connection", "price": 1000, "unit": "OTC" }, 
+  { "maxnum": 20, "label": "Number of Login IDs required", "price": 0, "unit": "Feature at No Cost" }];
+
+  sysAccInfoFiltered = [];
+  sysAccIngoLoginIds = [];
   selectedFeatures = [];
   
 
@@ -26,9 +37,22 @@ export class OrderConfigComponent implements OnInit {
 
   ngOnInit() {
     this.addFeaturesForm = this.formBuilder.group({
-      addFeatures: this.formBuilder.array([])
-    })
-    ;
+      addFeatures: this.formBuilder.array([]) //, this.addFeaturesValidator
+    });
+
+    this.sysAccForm = this.formBuilder.group({
+      sysAccInfoArray : this.formBuilder.array([]),
+      sysAccInfoLoginId : this.formBuilder.group({
+        selectLoginItem : '',
+        sysAccItemLoginLabel: '',
+        sysAccItemLoginPrice : '',
+        sysAccItemLoginUnit : ''
+      })
+    });
+
+    // this.sysAccForm.patchValue({
+    //   sysAccInfoLoginId : {selectLoginItem : '1'}
+    // });
 
     this.orderConfigService.getAllAddFeatures().subscribe(res => {
       res.forEach(element => {
@@ -38,12 +62,26 @@ export class OrderConfigComponent implements OnInit {
       });
       console.log(this.features);
   });
+
+  this.sysAccInfoFiltered = this.sysAccInfo.filter(({label}) => !label.includes('Login'));
+  this.sysAccIngoLoginIds = this.sysAccInfo.filter(({label}) => label.includes('Login'));
+
+  console.log(this.sysAccIngoLoginIds[0]);
+
+  this.sysAccInfoFiltered.forEach(element => {
+    this.sysAccInfoArray = this.sysAccForm.get('sysAccInfoArray') as FormArray;
+    this.sysAccInfoArray.push(this.createSysAccItem());
+    });
 }
 
 onChange(event) {
   this.id = this.id + 1;
   this.orderConfigService.changeId(this.id);
   this.expandAcc = true;
+}
+
+onCheckedSysChange(event, item) {
+
 }
 
 onSelectChange(event) {
@@ -90,7 +128,40 @@ createItem(): FormGroup {
   });
 }
 
+createSysAccItem(): FormGroup {
+  return this.formBuilder.group({
+    selectItem : 0,
+    sysAccItemLabel: '',
+    sysAccItemPrice : '',
+    sysAccItemUnit : ''
+  });
+}
+
 onSubmit() {}
 
+onSubmit1() {}
+
+addFeaturesValidator(formarray: FormArray): {[s: string]: boolean} {
+  if (formarray.get('instNumber').value > 0 && formarray.get('versionSelect').value === 'default') {
+    return { 'versionRequired' : true};
+  }
+  return null;
+}
+
+onRadioChecked(me) {
+  this.sysAccInfoArray.value.forEach((element, index) => {
+    //console.log(element['selectItem']);
+    //element['selectItem'] = 2;
+  });
+
+  this.sysAccInfoArray = this.sysAccForm.get('sysAccInfoArray') as FormArray;
+
+  for (let control of this.sysAccInfoArray.controls) {
+    console.log(control.controls['selectItem']);
+  }
+  
+  //console.log(this.sysAccInfoArray);
+  //console.log(this.sysAccForm.get('sysAccInfoArray').get('1').get('selectItem').patchValue('1'));
+}
 }
 
