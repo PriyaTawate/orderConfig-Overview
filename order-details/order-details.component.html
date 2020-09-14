@@ -36,6 +36,41 @@
                 </div>
                 <div><p>$ {{sumAddFeaturesotc}} OTC</p></div>
                 <div><p>$ {{sumAddFeaturesmonth}} /Month/Unit</p></div>
+                <div>{{sysAccJson|json}}</div>            
      </ibm-accordion-item>
+     <ibm-accordion-item title="System Access Information:  " [expanded] = "expandAcc">
+        <div ibmGrid>
+            <div ibmRow *ngFor="let item of sysAccJson.sysAccInfoArray">
+                <ng-template [ngIf]="item.selectItem">
+                    <div ibmCol [columnNumbers]="{'lg': 5}">
+                        <p noWrap=true><span>{{item.sysAccItemLabel}}  </span> 
+                    </div>
+                    <div ibmCol [columnNumbers]="{'lg': 2}">
+                        <p noWrap=true><span>1</span> 
+                    </div>
+                    <div ibmCol [columnNumbers]="{'lg': 5}">
+                        <p><span *ngIf=" item.sysAccItemPrice && item.sysAccItemPrice > 0">$</span>
+                        <span *ngIf="item.sysAccItemPrice && item.sysAccItemPrice > 0">{{item.sysAccItemPrice}}   </span>
+                        <span>{{item.sysAccItemUnit}}</span></p>
+                    </div>
+                </ng-template>  
+            </div>
+            <div ibmRow *ngIf="sysAccJson.sysAccInfoLoginId.selectLoginItem && sysAccJson.sysAccInfoLoginId.selectLoginItem > 0">
+                <div ibmCol [columnNumbers]="{'lg': 5}">
+                    <p noWrap=true><span>{{sysAccJson.sysAccInfoLoginId.sysAccItemLoginLabel}}  </span> 
+                </div>
+                <div ibmCol [columnNumbers]="{'lg': 2}">
+                    <p noWrap=true><span>{{sysAccJson.sysAccInfoLoginId.selectLoginItem}}  </span> 
+                </div>
+                <div ibmCol [columnNumbers]="{'lg': 5}">
+                    <p><span>{{sysAccJson.sysAccInfoLoginId.sysAccItemLoginPrice}}</span>
+                    <span>{{sysAccJson.sysAccInfoLoginId.sysAccItemLoginUnit}}</span></p>
+                </div>
+            </div>
+        </div>
+        <div><p>$ {{sumSysAccotc}} OTC</p></div>
+        <div><p>$ {{sumSysAccmonth}} /Month/Unit</p></div>
+        <div>{{sysAccJson|json}}</div>            
+</ibm-accordion-item>
     </ibm-accordion>
 </div>
