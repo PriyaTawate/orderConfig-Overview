@@ -16,9 +16,14 @@ export class OrderDetailsComponent implements OnInit {
   @Input() checkedItems: any;
   @Input() selectedFeatures: any;
   @Input() orderConfigJson;
+  @Input() sysAccJson;
+
   sumAddFeaturesotc;
   sumAddFeaturesmonth;
-  arr = [0,1,2,3,4];
+  sumSysAccotc;
+  sumSysAccmonth;
+  jsonObject : [] = [];
+  jsonObject1 : [] = [];
 
   constructor(private route: ActivatedRoute, router: Router, private orderConfigService: OrderConfigService) { }
 
@@ -30,18 +35,45 @@ export class OrderDetailsComponent implements OnInit {
     console.log("new " + this.orderConfigJson.addFeatures);
     this.sumAddFeaturesotc = 0;
     this.sumAddFeaturesmonth = 0;
+    this.sumSysAccotc = 0;
+    this.sumSysAccmonth = 0;
+    this.jsonObject1 = [];
+    this.jsonObject =[];
+
     this.orderConfigJson.addFeatures.forEach(element => {
+      //this.jsonObject1.push({'featureLabel': element.featureLabel + element.versionSelect + element.instNumber, 'featurePrice': (element.featurePrice * element.instNumber) });
+      
       if (element.featureUnit === 'OTC') {
         this.sumAddFeaturesotc = this.sumAddFeaturesotc + (element.instNumber * element.featurePrice);
       }
       else {
         this.sumAddFeaturesmonth = this.sumAddFeaturesmonth + (element.instNumber * element.featurePrice);
-      }
-      
+      }     
     });
-    console.log(this.sumAddFeaturesotc);
-    console.log(this.sumAddFeaturesmonth);
+    // this.jsonObject.push({'sumAddFeaturesotc' : this.sumAddFeaturesotc, 
+    // 'sumAddFeaturesmonth' : this.sumAddFeaturesmonth, 'addFeatures' : this.jsonObject1});
+    
+    this.sysAccJson.sysAccInfoArray.forEach(element => {
+      if (element.selectItem && element.selectItem > 0) {
+        if (element.sysAccItemUnit === 'OTC') {
+          this.sumSysAccotc = this.sumSysAccotc + element.sysAccItemPrice;
+        }
+        else {
+          this.sumSysAccmonth = this.sumSysAccmonth + element.sysAccItemPrice;
+        }
+      }
+    });
+
+    if (this.sysAccJson.sysAccInfoLoginId.selectLoginItem && this.sysAccJson.sysAccInfoLoginId.selectLoginItem > 0) {
+      if (this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginUnit === 'OTC') {
+        this.sumSysAccotc = this.sumSysAccotc + (+this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginPrice * 
+          this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
+      }
+      else {
+        this.sumSysAccmonth = this.sumSysAccmonth + (+this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginPrice * 
+          this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
+      }
+    }
   }
   
-
 }
