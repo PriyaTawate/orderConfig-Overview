@@ -52,18 +52,69 @@
                             <input type="text" formControlName="featureUnit" readonly style="border:0" ngModel="{{feature.unit}}">
                             </span>
                         </ibm-list-column>
+                        <!-- <span *ngIf="addFeaturesForm.get('addFeatures').errors['versionRequired']">Please select version before adding quantity!</span>  -->
                     </ng-container>
                     </ibm-list-row>
+                    
                 </ng-container>
                 </ibm-structured-list>
                 <button ibmButton="primary" (click)="onChange($event)" >Add</button>
             </ibm-accordion-item>
+            <ibm-accordion-item title="System Access Information">
+                <div  [formGroup]="sysAccForm">
+                    <div ibmRow  style="border:1px black solid;">
+                        <div ibmCol [columnNumbers]="{'lg':2,'sm':3}">
+                            Qty.
+                        </div>
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
+                            Label
+                        </div>
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':4}">
+                            Price
+                        </div>
+                    </div>
+                    <ng-container formArrayName="sysAccInfoArray">
+                        
+                    <div ibmRow  style="border:1px black solid;"
+                    *ngFor="let sysitem of sysAccInfoFiltered; let item of sysAccForm.get('sysAccInfoArray').controls; let i = index">
+                    <ng-container [formGroupName]="i">
+                        <div ibmCol [columnNumbers]="{'lg':2,'sm':3}" >
+                            <input formControlName="selectItem" type="radio" id="selectItem" name="selectItem" [value]="'selected'+i" [checked]="i === 0" (change)="onRadioChecked('selected'+i)">
+                        </div>
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
+                            <input type="text" formControlName="sysAccItemLabel" readonly style="border:0" [(ngModel)]="sysitem.label">
+                        </div>
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':4}" >
+                            <label *ngIf="sysitem.price !== 0">$</label>
+                        <input *ngIf="sysitem.price !== 0" type="text" formControlName="sysAccItemPrice" readonly style="border:0" size="3" ngModel="{{sysitem.price}}">
+                        <input type="text" formControlName="sysAccItemUnit" readonly style="border:0" ngModel="{{sysitem.unit}}">
+                        </div>
+                    </ng-container>
+                    </div>
+                </ng-container>
+                <ng-container formGroupName="sysAccInfoLoginId">
+                <div ibmRow>
+                    <div ibmCol [columnNumbers]="{'lg':2,'sm':3}">
+                        <input formControlName="selectLoginItem" type="number" ngModel min=1 max="{{sysAccIngoLoginIds[0].maxnum}}" >
+                    </div>
+                    <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
+                        <input type="text" formControlName="sysAccItemLoginLabel" readonly style="border:0" [(ngModel)]="sysAccIngoLoginIds[0].label">
+                    </div>
+                    <div ibmCol [columnNumbers]="{'lg':5,'sm':4}" >
+                        <label *ngIf="sysAccIngoLoginIds[0].price !== 0">$</label>
+                        <input *ngIf="sysAccIngoLoginIds[0].price !== 0" type="text" formControlName="sysAccItemLoginPrice" readonly style="border:0" size="3" ngModel="{{sysAccIngoLoginIds[0].price}}">
+                        <input type="text" formControlName="sysAccItemLoginUnit" readonly style="border:0" ngModel="{{sysAccIngoLoginIds[0].unit}}">
+                    </div>
+                </div>
+            </ng-container>
+                </div>
+        </ibm-accordion-item>
           </ibm-accordion>
           <p>{{addFeaturesForm.value|json}}</p>
       </div>
       <div ibmCol [columnNumbers]="{'lg': 5}">
           <!-- <router-outlet></router-outlet> -->
-          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [orderConfigJson]="addFeaturesForm.value" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
+          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [orderConfigJson]="addFeaturesForm.value" [sysAccJson]="sysAccForm.value" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
       </div>
     </div>   
   </div>
