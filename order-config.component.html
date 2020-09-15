@@ -62,24 +62,24 @@
             </ibm-accordion-item>
             <ibm-accordion-item title="System Access Information">
                 <div  [formGroup]="sysAccForm">
-                    <div ibmRow  style="border:1px black solid;">
+                    <div ibmRow  style="border-bottom:1px rgb(197, 196, 196) solid; padding: 8px">
                         <div ibmCol [columnNumbers]="{'lg':2,'sm':3}">
-                            Qty.
+                            <label style="font-weight: 600">Qunatity</label>
                         </div>
-                        <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
-                            Label
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':5}" style="font:bold">
+                            <label style="font-weight: 600">Label</label>
                         </div>
-                        <div ibmCol [columnNumbers]="{'lg':5,'sm':4}">
-                            Price
+                        <div ibmCol [columnNumbers]="{'lg':5,'sm':4}" style="font:bold">
+                            <label style="font-weight: 600">Price</label>
                         </div>
                     </div>
                     <ng-container formArrayName="sysAccInfoArray">
                         
-                    <div ibmRow  style="border:1px black solid;"
+                    <div ibmRow style="padding: 5px"
                     *ngFor="let sysitem of sysAccInfoFiltered; let item of sysAccForm.get('sysAccInfoArray').controls; let i = index">
                     <ng-container [formGroupName]="i">
                         <div ibmCol [columnNumbers]="{'lg':2,'sm':3}" >
-                            <input formControlName="selectItem" type="radio" id="selectItem" name="selectItem" [value]="'selected'+i" [checked]="i === 0" (change)="onRadioChecked('selected'+i)">
+                            <input formControlName="selectItem" type="radio" id="selectItem" name="selectItem" [value]="i" [checked]="i === 0" (change)="onRadioChecked(i)">
                         </div>
                         <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
                             <input type="text" formControlName="sysAccItemLabel" readonly style="border:0" [(ngModel)]="sysitem.label">
@@ -93,9 +93,9 @@
                     </div>
                 </ng-container>
                 <ng-container formGroupName="sysAccInfoLoginId">
-                <div ibmRow>
+                <div ibmRow style="padding: 5px"> 
                     <div ibmCol [columnNumbers]="{'lg':2,'sm':3}">
-                        <input formControlName="selectLoginItem" type="number" ngModel min=1 max="{{sysAccIngoLoginIds[0].maxnum}}" >
+                        <input formControlName="selectLoginItem" type="number" [(ngModel)]="requiredLogins" min=1 max="{{sysAccIngoLoginIds[0].maxnum}}" >
                     </div>
                     <div ibmCol [columnNumbers]="{'lg':5,'sm':5}">
                         <input type="text" formControlName="sysAccItemLoginLabel" readonly style="border:0" [(ngModel)]="sysAccIngoLoginIds[0].label">
@@ -110,11 +110,10 @@
                 </div>
         </ibm-accordion-item>
           </ibm-accordion>
-          <p>{{addFeaturesForm.value|json}}</p>
       </div>
       <div ibmCol [columnNumbers]="{'lg': 5}">
           <!-- <router-outlet></router-outlet> -->
-          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [orderConfigJson]="addFeaturesForm.value" [sysAccJson]="sysAccForm.value" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
+          <app-order-details [idNew] ="id" [osTitle]="selectedOSTitle" [expandAcc]="expandAcc" [selectedRadio]="selectedRadio" [orderConfigJson]="addFeaturesForm.value" [sysAccJson]="sysAccForm.value" [checkedItems]="SoftwarestobeSaved" [selectedFeatures]="selectedFeatures"></app-order-details>
       </div>
     </div>   
   </div>
