@@ -19,6 +19,8 @@ export class OrderConfigComponent implements OnInit {
                            {}];
   SoftwarestobeSaved = [];
   features = [];
+  selectedRadio = 0;
+  requiredLogins = 1;
   addFeaturesForm = new FormGroup({});
   addFeatures = new FormArray([]);
   sysAccForm = new FormGroup({});
@@ -149,16 +151,18 @@ addFeaturesValidator(formarray: FormArray): {[s: string]: boolean} {
 }
 
 onRadioChecked(me) {
-  this.sysAccInfoArray.value.forEach((element, index) => {
-    //console.log(element['selectItem']);
-    //element['selectItem'] = 2;
-  });
+  // this.sysAccInfoArray.value.forEach((element, index) => {
+  //   //console.log(element['selectItem']);
+  //   //element['selectItem'] = 2;
+  // });
 
-  this.sysAccInfoArray = this.sysAccForm.get('sysAccInfoArray') as FormArray;
+  // this.sysAccInfoArray = this.sysAccForm.get('sysAccInfoArray') as FormArray;
 
-  for (let control of this.sysAccInfoArray.controls) {
-    console.log(control.controls['selectItem']);
-  }
+  // for (let control of this.sysAccInfoArray.controls) {
+  //   console.log(control.controls['selectItem']);
+  // }
+
+  this.selectedRadio = me;
   
   //console.log(this.sysAccInfoArray);
   //console.log(this.sysAccForm.get('sysAccInfoArray').get('1').get('selectItem').patchValue('1'));
