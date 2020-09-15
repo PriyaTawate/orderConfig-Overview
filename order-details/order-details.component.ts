@@ -17,6 +17,7 @@ export class OrderDetailsComponent implements OnInit {
   @Input() selectedFeatures: any;
   @Input() orderConfigJson;
   @Input() sysAccJson;
+  @Input() selectedRadio;
 
   sumAddFeaturesotc;
   sumAddFeaturesmonth;
@@ -53,25 +54,27 @@ export class OrderDetailsComponent implements OnInit {
     // this.jsonObject.push({'sumAddFeaturesotc' : this.sumAddFeaturesotc, 
     // 'sumAddFeaturesmonth' : this.sumAddFeaturesmonth, 'addFeatures' : this.jsonObject1});
     
-    this.sysAccJson.sysAccInfoArray.forEach(element => {
-      if (element.selectItem && element.selectItem > 0) {
+    this.sysAccJson.sysAccInfoArray.forEach((element, index) => {
+      console.log(this.sumSysAccotc, this.sumSysAccmonth);
+      if (index === this.selectedRadio) {
         if (element.sysAccItemUnit === 'OTC') {
-          this.sumSysAccotc = this.sumSysAccotc + element.sysAccItemPrice;
+          this.sumSysAccotc = this.sumSysAccotc + +element.sysAccItemPrice;
         }
         else {
-          this.sumSysAccmonth = this.sumSysAccmonth + element.sysAccItemPrice;
+          this.sumSysAccmonth = this.sumSysAccmonth + +element.sysAccItemPrice;
         }
-      }
+      }     
     });
 
     if (this.sysAccJson.sysAccInfoLoginId.selectLoginItem && this.sysAccJson.sysAccInfoLoginId.selectLoginItem > 0) {
+      console.log("Login -" + this.sumSysAccotc, this.sumSysAccmonth);
       if (this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginUnit === 'OTC') {
         this.sumSysAccotc = this.sumSysAccotc + (+this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginPrice * 
-          this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
+          +this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
       }
       else {
         this.sumSysAccmonth = this.sumSysAccmonth + (+this.sysAccJson.sysAccInfoLoginId.sysAccItemLoginPrice * 
-          this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
+          +this.sysAccJson.sysAccInfoLoginId.selectLoginItem);
       }
     }
   }
