@@ -40,8 +40,8 @@
      </ibm-accordion-item>
      <ibm-accordion-item title="System Access Information:  " [expanded] = "expandAcc">
         <div ibmGrid>
-            <div ibmRow *ngFor="let item of sysAccJson.sysAccInfoArray">
-                <ng-template [ngIf]="item.selectItem">
+            <div ibmRow *ngFor="let item of sysAccJson.sysAccInfoArray; let i = index">
+                <ng-template [ngIf]="i === selectedRadio">
                     <div ibmCol [columnNumbers]="{'lg': 5}">
                         <p noWrap=true><span>{{item.sysAccItemLabel}}  </span> 
                     </div>
@@ -70,7 +70,7 @@
         </div>
         <div><p>$ {{sumSysAccotc}} OTC</p></div>
         <div><p>$ {{sumSysAccmonth}} /Month/Unit</p></div>
-        <div>{{sysAccJson|json}}</div>            
+
 </ibm-accordion-item>
     </ibm-accordion>
 </div>
